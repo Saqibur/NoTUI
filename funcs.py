@@ -2,6 +2,10 @@ import sys
 import numpy as np
 import cv2 as cv
 import pytesseract
+import imutils
+from pyimagesearch.shapedetector import ShapeDetector
+
+
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 def denoiseGaussian(image):
@@ -56,6 +60,57 @@ def ocr_core(image):
     text = pytesseract.image_to_string(image)
     return text
 
+def shapes(image):
+    thresh = cv.threshold(image, 60, 255, cv.THRESH_BINARY)[1]
+    resized = imutils.resize(image, width=300)
+    ratio = image.shape[0] / float(resized.shape[0])
+    # find contours in the thresholded image and initialize the
+    # shape detector
+    cnts = cv.findContours(thresh.copy(), cv.RETR_EXTERNAL,
+        cv.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts)
+    sd = ShapeDetector()
+    # loop over the contours
+    for c in cnts:
+        # compute the center of the contour, then detect the name of the
+        # shape using only the contour
+        M = cv.moments(c)
+        cX = int((M["m10"] / M["m00"]) * ratio)
+        cY = int((M["m01"] / M["m00"]) * ratio)
+        shape = sd.detect(c)
+    
+        # multiply the contour (x, y)-coordinates by the resize ratio,
+        # then draw the contours and the name of the shape on the image
+        c = c.astype("float")
+        c *= ratio
+        c = c.astype("int")
+        print(c)
+        cv.drawContours(image, [c], -1, (0, 255, 0), 2)
+        cv.putText(image, shape, (cX, cY), cv.FONT_HERSHEY_SIMPLEX,
+            0.5, (255, 255, 255), 2)
+    
+        # show the output image
+        cv.imshow("Image", image)
+        cv.waitKey(0)
+
+def drawPoints(image):
+    imgray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    ret, thresh = cv.threshold(imgray, 127, 255, 0)
+    _, contours, _ = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    # print(contours)
+    
+    # cv.drawContours(image, contours, -1, (0,255,0), 3)
+
+    cnts = cv.findContours(thresh.copy(), cv.RETR_EXTERNAL,
+	        cv.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts)
+
+    cnt = contours[0]
+    x,y,w,h = cv.boundingRect(cnt)
+    image = cv.rectangle(image,(x,y),(x+w,y+h),(0,255,0),2)
+    cv.imshow("magic", image)
+    cv.waitKey(0)
+
 # So far getting the best results with the bilateral filter.
 
 # test_image = cv.imread('Images/014.jfif')
@@ -67,11 +122,12 @@ def ocr_core(image):
 # cv.imshow("Laplacian on Gaussian", applyLaplacianFilter(denoiseGaussian(test_image)))
 # cv.waitKey(0)
 
-test_image = cv.imread('Images/024.jfif')
-cv.imshow("Original", test_image)
-cv.imshow("Red removed", isolate_red(test_image))
+test_image = cv.imread('Images/023.jfif')
+# cv.imshow("Original", test_image)
+# cv.imshow("Red removed", isolate_red(test_image))
+# print(ocr_core(isolate_red(test_image)))
+# cv.imshow("Laplacian on Original", applyLaplacianFilter(denoiseBilateral(isolate_red(test_image))))
 print(ocr_core(isolate_red(test_image)))
-cv.imshow("Laplacian on Original", applyLaplacianFilter(denoiseBilateral(isolate_red(test_image))))
-print(ocr_core(isolate_red(test_image)))
-
+# test_image = cv.imread('Images/023.jfif')
+drawPoints(denoiseBilateral(isolate_red(test_image)))
 cv.waitKey(0)
