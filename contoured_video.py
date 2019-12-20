@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 import pytesseract
 import imutils
+import json
 from pyimagesearch.shapedetector import ShapeDetector
 
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
@@ -68,11 +69,14 @@ def getContoursFromFrame(frame):
             cv.imshow("jinish", im_bw)
             label = pytesseract.image_to_string(im_bw)
 
-
+            
+            coord_dict = {"x" : f"{x}", "y" : f"{y}", "w" : f"{w}", "h" : f"{h}", "label" : f"{label}", }
+            with open("data_file.json", "w") as write_file:
+                json.dump(coord_dict, write_file)
 
             font = cv.FONT_HERSHEY_SIMPLEX
-            cv.putText(result, label, (x+w+10,y+h), fontFace=font, fontScale=0.5, color=(0,255,0), thickness=2)
-            cv.waitKey(1000)
+            cv.putText(result, label, (x+w+10,y+h), fontFace=font, fontScale=0.5, color=(255,0,0), thickness=2)
+            # cv.waitKey(1000)
             cv.imshow("lol", lol)
 
     # cv.drawContours(result, contours, -1, (0, 255, 0), 3)
@@ -80,7 +84,7 @@ def getContoursFromFrame(frame):
     # result = cv.bitwise_and(result, result, mask=mask)
     return result
 
-camera = cv.VideoCapture("Images/Video2.mp4")
+camera = cv.VideoCapture("Images/Video3.mp4")
 
 while True:
     check, frame = camera.read()
@@ -88,6 +92,6 @@ while True:
     frame = getContoursFromFrame(frame)
     cv.imshow("Frame", frame)
 
-    key = cv.waitKey(1000)
+    key = cv.waitKey(60)
     if key == 27:
         break
