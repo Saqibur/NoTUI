@@ -1,6 +1,8 @@
 import sys
 import numpy as np
 import cv2 as cv
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 def denoiseGaussian(image):
     return cv.GaussianBlur(image, (3, 3), 0)
@@ -50,6 +52,10 @@ def isolate_red(image):
     result = cv.bitwise_and(result, result, mask=mask)
     return result
 
+def ocr_core(image):
+    text = pytesseract.image_to_string(image)
+    return text
+
 # So far getting the best results with the bilateral filter.
 
 # test_image = cv.imread('Images/014.jfif')
@@ -61,7 +67,11 @@ def isolate_red(image):
 # cv.imshow("Laplacian on Gaussian", applyLaplacianFilter(denoiseGaussian(test_image)))
 # cv.waitKey(0)
 
-test_image = cv.imread('Images/023.jfif')
+test_image = cv.imread('Images/024.jfif')
 cv.imshow("Original", test_image)
 cv.imshow("Red removed", isolate_red(test_image))
+print(ocr_core(isolate_red(test_image)))
+cv.imshow("Laplacian on Original", applyLaplacianFilter(denoiseBilateral(isolate_red(test_image))))
+print(ocr_core(isolate_red(test_image)))
+
 cv.waitKey(0)
