@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 import cv2 as cv
 
 def denoiseGaussian(image):
@@ -40,13 +41,27 @@ def applyLaplacianFilter(image, kernel_size=3):
     # cv.waitKey(0)
     return abs_dst
 
+def isolate_red(image):
+    result = image.copy()
+    image = cv.cvtColor(image, cv.COLOR_BGR2HSV)
+    lower_red = np.array([155,25,0])
+    upper_red = np.array([179,255,255])
+    mask = cv.inRange(image, lower_red, upper_red)
+    result = cv.bitwise_and(result, result, mask=mask)
+    return result
+
 # So far getting the best results with the bilateral filter.
 
-test_image = cv.imread('Images/014.jfif')
+# test_image = cv.imread('Images/014.jfif')
+# cv.imshow("Original", test_image)
+# cv.imshow("Gaussian", denoiseGaussian(test_image))
+# cv.imshow("Bilateral", denoiseBilateral(test_image))
+# cv.imshow("Laplacian on Original", applyLaplacianFilter(test_image))
+# cv.imshow("Laplacian on Bilateral", applyLaplacianFilter(denoiseBilateral(test_image)))
+# cv.imshow("Laplacian on Gaussian", applyLaplacianFilter(denoiseGaussian(test_image)))
+# cv.waitKey(0)
+
+test_image = cv.imread('Images/023.jfif')
 cv.imshow("Original", test_image)
-cv.imshow("Gaussian", denoiseGaussian(test_image))
-cv.imshow("Bilateral", denoiseBilateral(test_image))
-cv.imshow("Laplacian on Original", applyLaplacianFilter(test_image))
-cv.imshow("Laplacian on Bilateral", applyLaplacianFilter(denoiseBilateral(test_image)))
-cv.imshow("Laplacian on Gaussian", applyLaplacianFilter(denoiseGaussian(test_image)))
+cv.imshow("Red removed", isolate_red(test_image))
 cv.waitKey(0)
