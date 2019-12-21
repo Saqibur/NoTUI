@@ -3,7 +3,6 @@ import numpy as np
 import pytesseract
 import imutils
 import json
-from pyimagesearch.shapedetector import ShapeDetector
 
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
@@ -84,8 +83,8 @@ def getContoursFromFrame(frame):
     # result = cv.bitwise_and(result, result, mask=mask)
     return result
 
-camera = cv.VideoCapture("Images/Video3.mp4")
-
+# camera = cv.VideoCapture("Images/Video3.mp4")
+# camera = cv.VideoCapture(0)
 while True:
     check, frame = camera.read()
    
