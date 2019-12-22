@@ -56,14 +56,14 @@ def getContoursFromFrame(frame):
     for contour in contours:
         area = cv.contourArea(contour)
         # print(area)
-        if area > 5000.0:
+        if area > 2000.0:
             rect = cv.boundingRect(contour)
             x,y,w,h = rect
             cv.rectangle(result, (x,y), (x+w,y+h), (0,255,0), 4)
             crop_img = result[y:y+h, x:x+w]
 
-            lol = applyLaplacianFilter(crop_img)
             im_gray = cv.cvtColor(crop_img, cv.COLOR_BGR2GRAY)
+            lol = applyLaplacianFilter(crop_img)
             (thresh, im_bw) = cv.threshold(im_gray, 128, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
             cv.imshow("jinish", im_bw)
             label = pytesseract.image_to_string(im_bw)
@@ -83,10 +83,10 @@ def getContoursFromFrame(frame):
     # result = cv.bitwise_and(result, result, mask=mask)
     return result
 
-# camera = cv.VideoCapture("Images/Video3.mp4")
+camera = cv.VideoCapture("Images/Video4.mp4")
 # camera = cv.VideoCapture(0)
 while True:
-    check, frame = camera.read()
+    _, frame = camera.read()
    
     frame = getContoursFromFrame(frame)
     cv.imshow("Frame", frame)
