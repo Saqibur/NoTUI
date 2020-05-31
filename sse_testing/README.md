@@ -6,3 +6,4 @@ Observations:
 - I guess it works.
 - 3 seconds between each update.
 - "Client-end" works independently.
+- Did not face CORS issues with the php dev server. Might not always be the case.
