@@ -1,1 +1,1 @@
-<h1>Note Tester</h1>
+<h1>Note Tester. You are in the wrong place.</h1>
