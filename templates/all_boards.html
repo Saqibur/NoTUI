@@ -7,6 +7,11 @@
     <div class="container jumbotron">
 
         <h1>All Boards</h1>
-        {{ boards }}
+        {% for board in boards %}
+            <hr>
+            Id: {{ board.id }} <br>
+            Name: {{ board.name }} <br>
+            Description: {{ board.description }} <br>
+        {% endfor %}
     </div>
 {% endblock %}

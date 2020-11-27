@@ -23,6 +23,11 @@ def all_notes():
             'all_notes.html',
             notes=notes,
         )
+    
+def update_board():
+    notes = Note.Note.query.all()
+
+    return redirect(url_for('all_notes'))
 
 def create_board_page():
     return render_template('create_board.html')

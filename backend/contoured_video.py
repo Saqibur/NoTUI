@@ -1,10 +1,9 @@
 import cv2 as cv
 import numpy as np
 import pytesseract
-import imutils
 import json
 
-pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files (x86)\Tesseract-OCR\\tesseract.exe'
 
 def applyLaplacianFilter(image, kernel_size=3):
     '''
@@ -46,11 +45,11 @@ def getContoursFromFrame(frame):
     image = cv.GaussianBlur(image, (3, 3), 0)
     result = image.copy()
     image = cv.cvtColor(image, cv.COLOR_BGR2HSV)
-    lower = np.array([155,25,0])
-    upper = np.array([179,255,255])
+    lower = np.array([10,80,120])
+    upper = np.array([255,255,255])
     mask = cv.inRange(image, lower, upper)
 
-    _, contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
+    contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
 
     print(len(contours))
     for contour in contours:
@@ -83,14 +82,10 @@ def getContoursFromFrame(frame):
     # result = cv.bitwise_and(result, result, mask=mask)
     return result
 
-camera = cv.VideoCapture("Images/Video4.mp4")
 # camera = cv.VideoCapture(0)
 while True:
-    _, frame = camera.read()
-   
-    frame = getContoursFromFrame(frame)
+    
+    frame = getContoursFromFrame(cv.imread(r'C:\Users\Saqibur\Desktop\Projects\NoTUI\static\sample_data\4.jpg'))
     cv.imshow("Frame", frame)
-
-    key = cv.waitKey(60)
-    if key == 27:
-        break
+    cv.waitKey(0)
+    exit()

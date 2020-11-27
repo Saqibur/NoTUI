@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>Notes</title>
+    <meta http-equiv="refresh" content="1" />
+{% endblock %}
+
+{% block content %}
+
+    <!-- {{ todos }}
+    {{ doing }}
+    {{ done }} -->
+
+    <div class="d-flex justify-content-center row" name="notes">
+        <div class="col-md-3 border">
+            <h1 class="mt-2">Todo</h1>
+            <hr>
+
+            {% for todo in todos %}
+              <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
+                <!-- <div class="card-header">Header</div> -->
+                <div class="card-body">
+                  <!-- <h5 class="card-title">Secondary card title</h5> -->
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-3 border">
+            <h1 class="mt-2">Doing</h1>
+            <hr>
+
+            {% for doing in doings %}
+              <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
+                <!-- <div class="card-header">Header</div> -->
+                <div class="card-body">
+                  <!-- <h5 class="card-title">Secondary card title</h5> -->
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-3 border">
+            <h1 class="mt-2">Done</h1>
+            <hr>
+
+            {% for done in dones %}
+              <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
+                <!-- <div class="card-header">Header</div> -->
+                <div class="card-body">
+                  <!-- <h5 class="card-title">Secondary card title</h5> -->
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+            {% endfor %}
+
+        </div>
+
+      
+          
+    </div>
+{% endblock %}

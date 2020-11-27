@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 
 ####################################
 
-from views import Index
+from views import Index, LiveNotes
 # from views import Index, Login, User, Account, Liability
 ## Routes ##
 app.add_url_rule('/', view_func=Index.index)
@@ -28,6 +28,8 @@ app.add_url_rule('/all_boards', view_func=Index.all_boards)
 app.add_url_rule('/all_notes', view_func=Index.all_notes)
 app.add_url_rule('/create_board', view_func=Index.create_board_page)
 app.add_url_rule('/create_test_note_page', view_func=Index.create_test_note_page)
+app.add_url_rule('/update_board', view_func=Index.update_board)
+app.add_url_rule('/live_notes', view_func=LiveNotes.live_notes)
 
 
 # app.add_url_rule('/account_history/<account_id>', view_func=Account.account_history)
