@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NoTUI Kanban</title>
-  </head>
-  <body>
-	  <h1>NoTUI - Kanban Board</h1>
-	  <a class="btn btn-primary" href="{{ url_for('all_boards') }}">Create a board</a>
-  </body>
-</html>
+{% extends 'base.html' %}
+{% block title %}
+    <title>NoTUI - Kanban Board</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container jumbotron">
+      <h1>NoTUI - Kanban Board</h1>
+      <a class="btn btn-primary" href="{{ url_for('create_board_page') }}">Create a board</a>
+      <a class="btn btn-primary" href="{{ url_for('create_test_note_page') }}">Create a test note</a>
+      <a class="btn btn-primary" href="{{ url_for('all_boards') }}">All Boards</a>
+      <a class="btn btn-primary" href="{{ url_for('all_notes') }}">All Notes</a>
+    </div>
+{% endblock %}
